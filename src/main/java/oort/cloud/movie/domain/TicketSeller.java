@@ -7,8 +7,9 @@ public class TicketSeller {
         this.ticketOffice = ticketOffice;
     }
 
-    public TicketOffice getTicketOffice() {
-        return ticketOffice;
+    public void sellTo(Audience audience){
+        Ticket ticket = ticketOffice.getTicket();
+        ticketOffice.plusAmount(audience.buy(ticket));
     }
 
     @Override
