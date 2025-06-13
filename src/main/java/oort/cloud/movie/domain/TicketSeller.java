@@ -1,0 +1,20 @@
+package oort.cloud.movie.domain;
+
+public class TicketSeller {
+    private final TicketOffice ticketOffice;
+
+    public TicketSeller(TicketOffice ticketOffice) {
+        this.ticketOffice = ticketOffice;
+    }
+
+    public TicketOffice getTicketOffice() {
+        return ticketOffice;
+    }
+
+    @Override
+    public String toString() {
+        return "TicketSeller{" +
+                "ticketOffice=" + ticketOffice +
+                '}';
+    }
+}
