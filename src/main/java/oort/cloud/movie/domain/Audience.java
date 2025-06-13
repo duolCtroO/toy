@@ -8,14 +8,7 @@ public class Audience {
     }
 
     public int buy(Ticket ticket){
-        if(bag.hasInvitation()){
-            bag.setTicket(ticket);
-            return 0;
-        }else{
-            bag.minusAmount(ticket.getPrice());
-            bag.setTicket(ticket);
-            return ticket.getPrice();
-        }
+        return bag.hold(ticket);
     }
 
     @Override

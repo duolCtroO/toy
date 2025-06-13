@@ -6,17 +6,23 @@ public class Bag {
     private Invitation invitation;
 
     public Bag(int amount){
-        this(null, amount, null);
+        this(amount, null);
     }
 
     public Bag(int amount, Invitation invitation){
-        this(null, amount, invitation);
-    }
-
-    public Bag(Ticket ticket, int amount, Invitation invitation) {
-        this.ticket = ticket;
         this.amount = amount;
         this.invitation = invitation;
+    }
+
+    public int hold(Ticket ticket){
+        if(hasInvitation()){
+            setTicket(ticket);
+            return 0;
+        }else{
+            minusAmount(ticket.getPrice());
+            setTicket(ticket);
+            return ticket.getPrice();
+        }
     }
 
     public boolean hasInvitation(){
@@ -27,23 +33,19 @@ public class Bag {
         return ticket != null;
     }
 
-    public void setTicket(Ticket ticket) {
+    private void setTicket(Ticket ticket) {
         this.ticket = ticket;
-    }
-
-    public void setAmount(int amount) {
-        this.amount = amount;
     }
 
     public int getAmount() {
         return amount;
     }
 
-    public void minusAmount(int amount){
+    private void minusAmount(int amount){
         this.amount -= amount;
     }
 
-    public void plusAmount(int amount){
+    private void plusAmount(int amount){
         this.amount += amount;
     }
 
