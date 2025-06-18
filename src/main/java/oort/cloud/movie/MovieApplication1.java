@@ -3,7 +3,7 @@ package oort.cloud.movie;
 import oort.cloud.movie.domain.*;
 import java.time.LocalDate;
 
-public class MovieApplication {
+public class MovieApplication1 {
     public static void main(String[] args) {
         System.out.println("Movie Application Start...");
         TicketOffice ticketOffice = new TicketOffice(10000,
