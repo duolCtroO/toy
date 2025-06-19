@@ -14,6 +14,14 @@ public class DiscountCondition {
         return type;
     }
 
+    public boolean isDiscountable(DayOfWeek dayOfWeek, LocalTime time){
+        return this.dayOfWeek.equals(dayOfWeek) && this.startTime.isAfter(time) && this.endTime.isBefore(time);
+    }
+
+    public boolean isDiscountable(int sequence){
+        return this.sequence == sequence;
+    }
+
     public void setType(DiscountConditionType type) {
         this.type = type;
     }

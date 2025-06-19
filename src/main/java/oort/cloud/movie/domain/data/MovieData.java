@@ -1,7 +1,10 @@
 package oort.cloud.movie.domain.data;
 import oort.cloud.movie.domain.Money;
 
+import java.time.DayOfWeek;
 import java.time.Duration;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.List;
 
 public class MovieData {
@@ -14,6 +17,41 @@ public class MovieData {
     private Money discountAmount;
     private double discountPercent;
 
+    public Money calculateAmountDiscountedFee(){
+        if(!movieType.equals(MovieType.AMOUNT_DISCOUNT)){
+            throw new IllegalArgumentException("잘못된 영화 유형 입니다.");
+        }
+        return fee.minus(discountAmount);
+    }
+
+    public Money calculatePercentDiscountedFee(){
+        if(!movieType.equals(MovieType.PERCENT_DISCOUNT)){
+            throw new IllegalArgumentException("잘못된 영화 유형 입니다.");
+        }
+        return fee.times(discountPercent);
+    }
+
+    public Money calculateNoneDiscountedFee(){
+        if(!movieType.equals(MovieType.PERCENT_DISCOUNT)){
+            throw new IllegalArgumentException("잘못된 영화 유형 입니다.");
+        }
+        return fee;
+    }
+
+    public boolean isDiscountable(LocalDateTime whenScreened, int sequence){
+        for (DiscountCondition condition : discountConditions) {
+            if(condition.getType() == DiscountConditionType.PERIOD){
+                if(condition.isDiscountable(whenScreened.getDayOfWeek(), whenScreened.toLocalTime())){
+                    return true;
+                }
+            }else{
+                if(condition.isDiscountable(sequence)){
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
     public String getTitle() {
         return title;
     }

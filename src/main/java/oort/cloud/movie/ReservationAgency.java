@@ -12,40 +12,7 @@ import oort.cloud.movie.domain.data.*;
 음*/
 public class ReservationAgency {
     public ReservationData reserve(ScreeningData screeningData, Customer customer, int audienceCount){
-        MovieData movie = screeningData.getMovie();
-
-        boolean discountable = false;
-        // 새로운 할인 정책을 추가해야 할 경우
-        // DiscountCondition 검증 해야하는 로직 추가 필요
-        for (DiscountCondition condition : movie.getDiscountConditions()) {
-            if(condition.getType() == DiscountConditionType.PERIOD){
-                discountable = screeningData.getWhenScreened().getDayOfWeek().equals(condition.getDayOfWeek())
-                                && screeningData.getWhenScreened().toLocalTime().isAfter(condition.getStartTime())
-                                && screeningData.getWhenScreened().toLocalTime().isBefore(condition.getEndTime());
-            }else{
-                discountable = screeningData.getSequence() == condition.getSequence();
-            }
-
-            if(discountable) break;
-        }
-
-        Money fee;
-
-        if(discountable){
-            Money discountAmount = Money.ZERO;
-            //새로운 할인 정책이 추가될 경우
-            //새로운 분기 로직이 필요하며 Movie 객체에 데이터도 변경이 필요함
-            switch (movie.getMovieType()){
-                case PERCENT_DISCOUNT -> discountAmount = movie.getFee().times(movie.getDiscountPercent());
-                case AMOUNT_DISCOUNT -> discountAmount = movie.getDiscountAmount();
-            }
-
-            fee = movie.getFee().minus(discountAmount);
-        }else{
-            fee = movie.getFee();
-        }
-
-
-        return new ReservationData(customer, screeningData, fee, audienceCount);
+        Money money = screeningData.calculateFee(audienceCount);
+        return new ReservationData(customer, screeningData, money, audienceCount);
     }
 }
