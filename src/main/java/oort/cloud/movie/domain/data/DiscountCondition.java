@@ -57,4 +57,21 @@ public class DiscountCondition {
     public void setEndTime(LocalTime endTime) {
         this.endTime = endTime;
     }
+
+    public boolean isSatisfiedBy(ScreeningData screeningData) {
+        if(type == DiscountConditionType.PERIOD){
+            return isSatisfiedByPeriod(screeningData);
+        }
+        return isSatisfiedBySequence(screeningData);
+    }
+
+    private boolean isSatisfiedByPeriod(ScreeningData screeningData){
+        return this.dayOfWeek.equals(screeningData.getWhenScreened().getDayOfWeek())
+                && this.startTime.isAfter(screeningData.getWhenScreened().toLocalTime())
+                && this.endTime.isBefore(screeningData.getWhenScreened().toLocalTime());
+    }
+
+    private boolean isSatisfiedBySequence(ScreeningData screeningData){
+        return this.sequence == screeningData.getSequence();
+    }
 }

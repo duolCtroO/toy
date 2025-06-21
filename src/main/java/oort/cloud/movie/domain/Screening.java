@@ -33,7 +33,7 @@ public class Screening {
         return movie.getFee();
     }
 
-    public Reservation reserve(Customer customer, Movie movie, int audienceCount){
+    public Reservation reserve(Customer customer, int audienceCount){
         return new Reservation(customer, this, calculateFee(audienceCount), audienceCount);
     }
 

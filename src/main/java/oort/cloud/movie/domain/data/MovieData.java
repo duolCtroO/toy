@@ -107,4 +107,27 @@ public class MovieData {
     public void setDiscountPercent(double discountPercent) {
         this.discountPercent = discountPercent;
     }
+
+    public Money calculateMovieFee(ScreeningData screeningData) {
+        if(isDiscountable(screeningData)){
+            return fee.minus(calculateDiscountAmount());
+        }
+        return fee;
+    }
+
+    private Money calculateDiscountAmount() {
+        return switch (this.getMovieType()){
+            case AMOUNT_DISCOUNT ->
+                    this.calculateAmountDiscountedFee();
+            case PERCENT_DISCOUNT ->
+                    this.calculatePercentDiscountedFee();
+            default ->
+                    this.calculateNoneDiscountedFee();
+        };
+    }
+
+    private boolean isDiscountable(ScreeningData screeningData){
+        return discountConditions.stream()
+                .anyMatch(discountCondition -> discountCondition.isSatisfiedBy(screeningData));
+    }
 }
